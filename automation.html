@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <script>
+      function onUAReady() {
+        var output = document.getElementById('output')
+
+        // Write out all of the getters
+        output.textContent += 'User Id:' + UAirship.getUserId() + '\n'
+        output.textContent += 'Channel Id:' + UAirship.getChannelId() + '\n'
+        output.textContent += 'Named User Id:' + UAirship.getNamedUser() + '\n'
+        output.textContent += 'Device Model: ' + UAirship.getDeviceModel() + '\n'
+        output.textContent += 'Message Id: ' + UAirship.getMessageId() + '\n'
+        output.textContent += 'Message Title: ' + UAirship.getMessageTitle() + '\n'
+        output.textContent += 'Message Sent Date: ' + UAirship.getMessageSentDate() + '\n'
+        output.textContent += 'Message Sent Date MS: ' + UAirship.getMessageSentDateMS()
+
+        var closeButton = document.getElementById('close')
+        closeButton.disabled = false
+        closeButton.addEventListener('click', function()  {
+          UAirship.close()
+        })
+
+        var addTagsButton = document.getElementById('addTags')
+        addTagsButton.disabled = false
+        addTagsButton.addEventListener('click', function()  {
+            UAirship.runAction("add_tags_action", "hi", function(error, result) {
+              if (error) {
+                console.log("Failed to add tags!")
+              } else {
+                console.log("Tags added!")
+              }
+          })
+        })
+
+        var openExternalURLButton = document.getElementById('openURL')
+        openExternalURLButton.disabled = false
+        openExternalURLButton.addEventListener('click', function()  {
+            UAirship.runAction("open_external_url_action", "http://www.airship.com", function() {return true})
+        })
+
+      }
+
+      document.addEventListener('ualibraryready', onUAReady, false)
+    </script>
+  </head>
+  <body style="background: #d3d3d3">
+    <h1>Tap a button below to perform an action!</h1>
+    <p>Check out what you can do with a little bit of JavaScript</p>
+    <button id="close" disabled>close</button><br><br>
+    <button id="addTags" disabled>add tags</button><br><br>
+    <button id="openURL" disabled>open external URL</button><br><br>
+    <button onclick="location.href='http://www.airship.com'">open URL in webview</button>
+    <pre id="output"></pre>
+  </body>
+</html>
